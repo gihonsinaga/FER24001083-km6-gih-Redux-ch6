@@ -5,11 +5,13 @@ import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from "./Components/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { getMe } from "./redux/actions/authActions";
 
 const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -19,52 +21,62 @@ const Profile = () => {
     return `${year}-${month}-${day}`;
   }
 
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.user);
+  // console.log("userData", userData);
+
   useEffect(() => {
-    console.log("localStorage ", localStorage.getItem("token"));
-    if (localStorage.getItem("token") === null) {
+    dispatch(getMe());
+  }, [dispatch]);
+
+  const token = useSelector((state) => state.auth.token);
+  // console.log("token", token);
+
+  useEffect(() => {
+    if (token === null) {
       alert("silahkan login dulu");
       navigate("/Login");
     }
   }, []);
 
-  useEffect(() => {
-    async function fetchData() {
-      // if (localStorage.getItem("login") === "google component") {
-      //   const decoded = jwtDecode(localStorage.getItem("token"));
-      //   console.log("decoded", decoded);
-      //   setUserData(decoded);
-      //   if (decoded?.exp < new Date() / 1000) {
-      //     alert("token expire");
-      //     handleLogout();
-      //     return;
-      //   }
-      // } else {
-      try {
-        const response = await axios.get(
-          "https://shy-cloud-3319.fly.dev/api/v1/auth/me",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        const userData = response.data;
-        console.log("User profle: ", userData);
-        setUserData(userData);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          // alert("Token expired");
-          handleLogout();
-          return;
-        } else {
-          alert("An error occurred while fetching user data");
-          console.error("Error: ", error);
-        }
-      }
-      // }
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     // if (localStorage.getItem("login") === "google component") {
+  //     //   const decoded = jwtDecode(localStorage.getItem("token"));
+  //     //   console.log("decoded", decoded);
+  //     //   setUserData(decoded);
+  //     //   if (decoded?.exp < new Date() / 1000) {
+  //     //     alert("token expire");
+  //     //     handleLogout();
+  //     //     return;
+  //     //   }
+  //     // } else {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://shy-cloud-3319.fly.dev/api/v1/auth/me",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //         }
+  //       );
+  //       const userData = response.data;
+  //       console.log("User profle: ", userData);
+  //       setUserData(userData);
+  //     } catch (error) {
+  //       if (error.response && error.response.status === 401) {
+  //         // alert("Token expired");
+  //         handleLogout();
+  //         return;
+  //       } else {
+  //         alert("An error occurred while fetching user data");
+  //         console.error("Error: ", error);
+  //       }
+  //     }
+  //     // }
+  //   }
+  //   fetchData();
+  // }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

@@ -8,6 +8,8 @@ import Nav from "./Components/Nav";
 import "./index.css";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "./redux/actions/authActions";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -17,11 +19,18 @@ const LandingPage = () => {
   const [userData, setUserData] = useState(null);
   const [userDataa, setUserDataa] = useState(null);
 
+  // const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.auth.token);
+  // console.log("data login", data);
+
+  // useEffect(() => {
+  //   dispatch(login());
+  // }, []);
   // console.log("location ", localStorage.getItem("token"));
 
   useEffect(() => {
-    console.log("localStorage ", localStorage.getItem("token"));
-    if (localStorage.getItem("token") === null) {
+    if (token === null) {
       alert("silahkan login dulu");
       navigate("/Login");
     }
@@ -29,65 +38,65 @@ const LandingPage = () => {
 
   // else if(localStorage.getItem("token") != null) { localStorage.removeItem("token")}
 
-  useEffect(() => {
-    async function fetchData() {
-      // if (localStorage.getItem("login") === "google component") {
-      //   const decoded = jwtDecode(localStorage.getItem("token"));
-      //   console.log("decoded", decoded);
-      //   setUserData(decoded);
-      //   if (decoded?.exp < new Date() / 1000) {
-      //     alert("token expire");
-      //     handleLogout();
-      //     return;
-      //   }
-      // } else {
-      try {
-        const response = await axios.get(
-          "https://shy-cloud-3319.fly.dev/api/v1/auth/me",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        const userData = response.data;
-        console.log("User data: ", userData);
-        setUserData(userData); // kalau pake login google yang pertama
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          // alert("Token expired");
-          handleLogout();
-          return;
-        } else {
-          alert("An error occurred while fetching user data");
-          console.error("Error: ", error);
-        }
-      }
-      // }
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     // if (localStorage.getItem("login") === "google component") {
+  //     //   const decoded = jwtDecode(localStorage.getItem("token"));
+  //     //   console.log("decoded", decoded);
+  //     //   setUserData(decoded);
+  //     //   if (decoded?.exp < new Date() / 1000) {
+  //     //     alert("token expire");
+  //     //     handleLogout();
+  //     //     return;
+  //     //   }
+  //     // } else {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://shy-cloud-3319.fly.dev/api/v1/auth/me",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //         }
+  //       );
+  //       const userData = response.data;
+  //       console.log("User data: ", userData);
+  //       setUserData(userData); // kalau pake login google yang pertama
+  //     } catch (error) {
+  //       if (error.response && error.response.status === 401) {
+  //         // alert("Token expired");
+  //         handleLogout();
+  //         return;
+  //       } else {
+  //         alert("An error occurred while fetching user data");
+  //         console.error("Error: ", error);
+  //       }
+  //     }
+  //     // }
+  //   }
+  //   fetchData();
+  // }, []);
 
-  const handleClick = () => {
-    setClick(!click);
-  };
+  // const handleClick = () => {
+  //   setClick(!click);
+  // };
 
-  const isActive = (pathname) => {
-    return location.pathname === pathname;
-  };
+  // const isActive = (pathname) => {
+  //   return location.pathname === pathname;
+  // };
 
-  const activeStyle = {
-    borderBottom: "2px solid white",
-  };
+  // const activeStyle = {
+  //   borderBottom: "2px solid white",
+  // };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/Login");
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   navigate("/Login");
+  // };
 
-  const toggleDropdown = () => {
-    setDropdownVisible(!dropdownVisible);
-  };
+  // const toggleDropdown = () => {
+  //   setDropdownVisible(!dropdownVisible);
+  // };
 
   //mobile web responsive
   // const content = (

@@ -7,14 +7,70 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "./redux/actions/authActions";
+import {
+  setshowPassword,
+  setEmail,
+  setName,
+  setPassword,
+} from "./redux/reducers/authReducers";
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
-  const [error, setError] = useState(null);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [error, setError] = useState(null);
+
+  // const email = useSelector((state) => state.auth.email);
+  // const name = useSelector((state) => state.auth.name);
+  // const password = useSelector((state) => state.auth.password);
+  const error = useSelector((state) => state.auth.errorr);
+  const showPassword = useSelector((state) => state.auth.showPassword);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  console.log("state", error);
+
+  // console.log("state register", showPassword);
+
+  // const handleEmailChange = (e) => {
+  //   dispatch(setEmail(e.target.value));
+  // };
+
+  // const handleNameChange = (e) => {
+  //   dispatch(setName(e.target.value));
+  // };
+
+  // const handlePasswordChange = (e) => {
+  //   dispatch(setPassword(e.target.value));
+  // };
+
+  const togglePasswordVisibility = () => {
+    dispatch(setshowPassword(!showPassword));
+  };
+
+  const PasswordVisibility = () => {
+    togglePasswordVisibility();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let data = JSON.stringify({
+      email,
+      name,
+      password,
+    });
+
+    dispatch(register(data, navigate));
+  };
+
+  // useEffect(() => {
+  //   console.log("localStorage ", localStorage.getItem("persist:root"));
+  //   localStorage.removeItem("persist:root");
+  // }, []);
 
   useEffect(() => {
     console.log("localStorage ", localStorage.getItem("token"));
@@ -24,61 +80,61 @@ function Register() {
     }
   }, []);
 
-  const PasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  // const PasswordVisibility = () => {
+  //   setShowPassword(!showPassword);
+  // };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "https://shy-cloud-3319.fly.dev/api/v1/auth/register",
-        {
-          email,
-          name,
-          password,
-        }
-      );
+  //   try {
+  //     const response = await axios.post(
+  //       "https://shy-cloud-3319.fly.dev/api/v1/auth/register",
+  //       {
+  //         email,
+  //         name,
+  //         password,
+  //       }
+  //     );
 
-      console.log("response :", response);
-      console.log("response register :", response.data);
-      if (response?.status === 201) {
-        toast.success("Registration successful", {
-          style: {
-            border: "1px solid black",
-            padding: "20px",
-            color: "green",
-            duration: 6000,
-          },
-          iconTheme: {
-            primary: "green",
-            secondary: "white",
-          },
-          duration: 10000,
-        });
-        setEmail("");
-        setName("");
-        setPassword("");
-        setError("");
-      }
-    } catch (error) {
-      console.error("Registration gagal :", error);
-      setError(error.response.data.message);
-      toast.error("Registration failed. Please try again", {
-        style: {
-          border: "1px solid black",
-          padding: "20px",
-          color: "red",
-        },
-        iconTheme: {
-          primary: "red",
-          secondary: "white",
-        },
-        duration: 6000,
-      });
-    }
-  };
+  //     console.log("response :", response);
+  //     console.log("response register :", response.data);
+  //     if (response?.status === 201) {
+  //       toast.success("Registration successful", {
+  //         style: {
+  //           border: "1px solid black",
+  //           padding: "20px",
+  //           color: "green",
+  //           duration: 6000,
+  //         },
+  //         iconTheme: {
+  //           primary: "green",
+  //           secondary: "white",
+  //         },
+  //         duration: 10000,
+  //       });
+  //       setEmail("");
+  //       setName("");
+  //       setPassword("");
+  //       setError("");
+  //     }
+  //   } catch (error) {
+  //     console.error("Registration gagal :", error);
+  //     setError(error.response.data.message);
+  //     toast.error("Registration failed. Please try again", {
+  //       style: {
+  //         border: "1px solid black",
+  //         padding: "20px",
+  //         color: "red",
+  //       },
+  //       iconTheme: {
+  //         primary: "red",
+  //         secondary: "white",
+  //       },
+  //       duration: 6000,
+  //     });
+  //   }
+  // };
 
   return (
     <div>

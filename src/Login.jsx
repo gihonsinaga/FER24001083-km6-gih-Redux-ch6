@@ -8,16 +8,61 @@ import "slick-carousel/slick/slick-theme.css";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import GoogleLogin from "./GoogleLogin";
+import { login } from "./redux/actions/authActions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setshowPassword,
+  setEmail,
+  setPassword,
+} from "./redux/reducers/authReducers";
 
 function Login() {
   const [email, setemail] = useState("gihonsinaga@gmail.com");
   const [password, setPassword] = useState("Gihon123");
-  const [error, setError] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const email = useSelector((state) => state.auth.email);
+  // const password = useSelector((state) => state.auth.password);
+  const error = useSelector((state) => state.auth.errorr);
+  const showPassword = useSelector((state) => state.auth.showPassword);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // falfareza@binaracademy.org
-  // Aneh1234
+  console.log(" state error", error);
+
+  // console.log("state login", showPassword);
+
+  // const handleEmailChange = (e) => {
+  //   dispatch(setEmail(e.target.value));
+  // };
+
+  // const handlePasswordChange = (e) => {
+  //   dispatch(setPassword(e.target.value));
+  // };
+
+  const togglePasswordVisibility = () => {
+    dispatch(setshowPassword(!showPassword));
+  };
+
+  const PasswordVisibility = () => {
+    togglePasswordVisibility();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let data = JSON.stringify({
+      email,
+      password,
+    });
+
+    dispatch(login(data, navigate));
+  };
+
+  // useEffect(() => {
+  //   console.log("localStorage ", localStorage.getItem("persist:root"));
+  //   localStorage.removeItem("persist:root");
+  // }, []);
 
   useEffect(() => {
     console.log("localStorage ", localStorage.getItem("token"));
@@ -27,35 +72,35 @@ function Login() {
     }
   }, []);
 
-  const PasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  // const PasswordVisibility = () => {
+  //   setShowPassword(!showPassword);
+  // };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "https://shy-cloud-3319.fly.dev/api/v1/auth/login",
-        {
-          email,
-          password,
-          expiresInMins: 30,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      console.log("Logged in user data: ", response.data.data.token);
-      const token = response.data.data.token;
-      console.log("token", token);
-      localStorage.setItem("token", token);
-      navigate("/LandingPage");
-    } catch (error) {
-      console.error("Login error: ", error);
-      setError("Your email or password is wrong");
-    }
-  };
+  //   try {
+  //     const response = await axios.post(
+  //       "https://shy-cloud-3319.fly.dev/api/v1/auth/login",
+  //       {
+  //         email,
+  //         password,
+  //         expiresInMins: 30,
+  //       },
+  //       {
+  //         headers: { "Content-Type": "application/json" },
+  //       }
+  //     );
+  //     console.log("Logged in user data: ", response.data.data.token);
+  //     const token = response.data.data.token;
+  //     console.log("token", token);
+  //     localStorage.setItem("token", token);
+  //     navigate("/LandingPage");
+  //   } catch (error) {
+  //     console.error("Login error: ", error);
+  //     setError("Your email or password is wrong");
+  //   }
+  // };
 
   return (
     <div className="">
@@ -125,35 +170,7 @@ function Login() {
                 <p className="text-center text-sm text-black">OR</p>
                 <hr className="border-gray-400" />
               </div>
-              {/* <button
-              onClick={GoogleLogin}
-              className="bg-white border py-3 w-full rounded-full shadow-md mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 text-gray-700"
-            >
-              <svg
-                className="mr-3"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 48 48"
-                width="25px"
-              >
-                <path
-                  fill="#FFC107"
-                  d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-                />
-                <path
-                  fill="#FF3D00"
-                  d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-                />
-                <path
-                  fill="#4CAF50"
-                  d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-                />
-                <path
-                  fill="#1976D2"
-                  d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-                />
-              </svg>
-              Login with Google
-            </button> */}
+
               <GoogleLogin />
               <div className="mt-10 text-xs border-b border-black py-4 text-black"></div>
               <div className="mt-3 text-xs flex justify-between items-center text-black">

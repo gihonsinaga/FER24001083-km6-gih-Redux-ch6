@@ -8,12 +8,14 @@ import figureReducers from "./reducers/figureReducers";
 import cardReducers from "./reducers/cardReducers";
 import seriesReducers from "./reducers/seriesReducers";
 import gamesReducers from "./reducers/gamesReducers";
+import authReducers from "./reducers/authReducers";
 
 const rootReducers = combineReducers({
   figures: figureReducers,
   cards: cardReducers,
   series: seriesReducers,
   games: gamesReducers,
+  auth: authReducers,
 });
 
 const persistConfig = {

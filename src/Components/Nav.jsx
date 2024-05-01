@@ -4,39 +4,49 @@ import { FaTimes } from "react-icons/fa";
 import { CiMenuFries } from "react-icons/ci";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getMe } from "../redux/actions/authActions";
 
 const Nav = ({ handleSearch }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [click, setClick] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
+
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.user);
+  // console.log("userData", userData);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          "https://shy-cloud-3319.fly.dev/api/v1/auth/me",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        const userData = response.data;
-        console.log("User data: ", userData);
-        setUserData(userData);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          // alert("Token expired");
-        } else {
-          alert("An error occurred while fetching user data");
-          console.error("Error: ", error);
-        }
-      }
-    }
-    fetchData();
-  }, []);
+    dispatch(getMe());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://shy-cloud-3319.fly.dev/api/v1/auth/me",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //         }
+  //       );
+  //       const userData = response.data;
+  //       console.log("User data nav: ", userData);
+  //       setUserData(userData);
+  //     } catch (error) {
+  //       if (error.response && error.response.status === 401) {
+  //         // alert("Token expired");
+  //       } else {
+  //         alert("An error occurred while fetching user data");
+  //         console.error("Error: ", error);
+  //       }
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
 
   const handleClick = () => {
     setClick(!click);
@@ -52,7 +62,8 @@ const Nav = ({ handleSearch }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/Login");
+    localStorage.removeItem("persist:root");
+    navigate("/");
   };
 
   const toggleDropdown = () => {
