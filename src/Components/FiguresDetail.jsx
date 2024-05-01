@@ -18,9 +18,11 @@ const FiguresDetail = () => {
     dispatch(DetailAmiibo());
   }, []);
 
+  const token = useSelector((state) => state.auth.token);
+  // console.log("token", token);
+
   useEffect(() => {
-    // console.log("localStorage ", localStorage.getItem("token"));
-    if (localStorage.getItem("token") === null) {
+    if (token === null) {
       alert("silahkan login dulu");
       navigate("/Login");
     }
