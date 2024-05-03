@@ -5,7 +5,7 @@ import { CiMenuFries } from "react-icons/ci";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { getMe } from "../redux/actions/authActions";
+import { getMe, logout } from "../redux/actions/authActions";
 
 const Nav = ({ handleSearch }) => {
   const navigate = useNavigate();
@@ -61,9 +61,8 @@ const Nav = ({ handleSearch }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("persist:root");
-    navigate("/");
+    dispatch(logout());
+    navigate("/Login");
   };
 
   const toggleDropdown = () => {

@@ -13,11 +13,11 @@ import { login } from "./redux/actions/authActions";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [click, setClick] = useState(false);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [userData, setUserData] = useState(null);
-  const [userDataa, setUserDataa] = useState(null);
+  // const location = useLocation();
+  // const [click, setClick] = useState(false);
+  // const [dropdownVisible, setDropdownVisible] = useState(false);
+  // const [userData, setUserData] = useState(null);
+  // const [userDataa, setUserDataa] = useState(null);
 
   // const dispatch = useDispatch();
 

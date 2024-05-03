@@ -7,16 +7,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "./Components/Footer";
 import "./index.css";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 function Home() {
   const navigate = useNavigate();
   const location = useLocation();
   const [click, setClick] = useState(false);
 
+  const token = useSelector((state) => state.auth.token);
   useEffect(() => {
-    console.log("localStorage ", localStorage.getItem("token"));
-    if (localStorage.getItem("token") !== null) {
-      toast.error("Please log out first before signing in again");
+    if (token !== null) {
+      alert("Please log out first before signing up again");
       navigate("/LandingPage");
     }
   }, []);

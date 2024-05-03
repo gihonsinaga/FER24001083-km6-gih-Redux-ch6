@@ -1,5 +1,9 @@
 import axios from "axios";
-import { setAmiibo, setDetail } from "../reducers/figureReducers";
+import {
+  setAmiibo,
+  setDetail,
+  setSearchTerm,
+} from "../reducers/figureReducers";
 
 export const CharacterAmiibo = () => async (dispatch, getState) => {
   try {
@@ -40,4 +44,8 @@ export const DetailAmiibo = (props) => async (dispatch) => {
   } catch (error) {
     console.error("Error fetching data", error);
   }
+};
+
+export const handleSearch = (searchTerm) => (dispatch) => {
+  dispatch(setSearchTerm(searchTerm));
 };
