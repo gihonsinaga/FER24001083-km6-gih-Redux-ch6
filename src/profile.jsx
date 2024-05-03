@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
-import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from "./Components/Footer";
@@ -10,8 +9,6 @@ import { getMe } from "./redux/actions/authActions";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  // const [userData, setUserData] = useState(null);
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -23,14 +20,12 @@ const Profile = () => {
 
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.user);
-  // console.log("userData", userData);
 
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
 
   const token = useSelector((state) => state.auth.token);
-  // console.log("token", token);
 
   useEffect(() => {
     if (token === null) {
@@ -38,45 +33,6 @@ const Profile = () => {
       navigate("/Login");
     }
   }, []);
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     // if (localStorage.getItem("login") === "google component") {
-  //     //   const decoded = jwtDecode(localStorage.getItem("token"));
-  //     //   console.log("decoded", decoded);
-  //     //   setUserData(decoded);
-  //     //   if (decoded?.exp < new Date() / 1000) {
-  //     //     alert("token expire");
-  //     //     handleLogout();
-  //     //     return;
-  //     //   }
-  //     // } else {
-  //     try {
-  //       const response = await axios.get(
-  //         "https://shy-cloud-3319.fly.dev/api/v1/auth/me",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //           },
-  //         }
-  //       );
-  //       const userData = response.data;
-  //       console.log("User profle: ", userData);
-  //       setUserData(userData);
-  //     } catch (error) {
-  //       if (error.response && error.response.status === 401) {
-  //         // alert("Token expired");
-  //         handleLogout();
-  //         return;
-  //       } else {
-  //         alert("An error occurred while fetching user data");
-  //         console.error("Error: ", error);
-  //       }
-  //     }
-  //     // }
-  //   }
-  //   fetchData();
-  // }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

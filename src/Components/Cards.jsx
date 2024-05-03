@@ -1,39 +1,28 @@
 import React, { useEffect, useState } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CharacterAmiibo, DetailCards } from "../redux/actions/cardActions";
-import { handleSearch } from "../redux/actions/figureActions";
 import { setAmiibo } from "../redux/reducers/cardReducers";
+// import { handleSearch } from "../redux/actions/functionActions";
 
 const Character = () => {
-  // const [amiibo, setAmiibo] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [sortedBy, setSortedBy] = useState(null);
-  // const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(12);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const searchTerm = useSelector((state) => state.figures.searchTerm);
-  // console.log("searchTerm ", searchTerm);
-
-  const handleSearchChange = (event) => {
-    dispatch(handleSearch(event.target.value));
-    setCurrentPage(1);
-  };
-
   const data = useSelector((state) => state.cards.cards);
-  // console.log("data cards", data);
 
   useEffect(() => {
     dispatch(CharacterAmiibo());
   }, []);
 
   const token = useSelector((state) => state.auth.token);
-  // console.log("token", token);
 
   useEffect(() => {
     if (token === null) {
@@ -41,31 +30,6 @@ const Character = () => {
       navigate("/Login");
     }
   }, []);
-
-  // const CharacterAmiibo = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "https://www.amiiboapi.com/api/amiibo/?type=card&showusage",
-  //       {
-  //         headers: { accept: "application/json" },
-  //       }
-  //     );
-  //     console.log("response data", response.data);
-  //     const amiiboData = response.data.amiibo.map((item) => ({
-  //       name: item.character,
-  //       image: item.image,
-  //       games: item.gameSeries,
-  //       tail: item.tail,
-  //     }));
-  //     setAmiibo(amiiboData);
-  //   } catch (error) {
-  //     console.error("Error fetching data", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   CharacterAmiibo();
-  // }, []);
 
   const sortByName = () => {
     let sorted;
@@ -94,12 +58,11 @@ const Character = () => {
     setCurrentPage(1);
   };
 
-  // search
-  // const handleSearch = (event) => {
-  //   console.log("event", event);
-  //   setSearchTerm(event.target.value);
-  //   setCurrentPage(1);
-  // };
+  //search
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -133,6 +96,14 @@ const Character = () => {
       { length: endPage - startPage + 1 },
       (_, i) => startPage + i
     );
+
+    // const searchTerm = useSelector((state) => state.function.searchTerm);
+    // console.log("searchTerm ", searchTerm);
+
+    // const handleSearchChange = (event) => {
+    //   dispatch(handleSearch(event.target.value));
+    //   setCurrentPage(1);
+    // };
   }
   return (
     <div className="">
@@ -167,7 +138,7 @@ const Character = () => {
           <input
             type="text"
             placeholder="Search ..."
-            onChange={handleSearchChange}
+            onChange={handleSearch}
             className="text-black pl-5 mr-48 bg-slate-100 justify-start border-2 border-black rounded-full p-2 w-[400px] outline-none"
           />
         </div>

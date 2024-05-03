@@ -1,33 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-scroll";
-import { FaTimes } from "react-icons/fa";
-import { CiMenuFries } from "react-icons/ci";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "./Components/Footer";
 import Nav from "./Components/Nav";
 import "./index.css";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "./redux/actions/authActions";
+
+import { useSelector } from "react-redux";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const [click, setClick] = useState(false);
-  // const [dropdownVisible, setDropdownVisible] = useState(false);
-  // const [userData, setUserData] = useState(null);
-  // const [userDataa, setUserDataa] = useState(null);
-
-  // const dispatch = useDispatch();
 
   const token = useSelector((state) => state.auth.token);
-  // console.log("data login", data);
-
-  // useEffect(() => {
-  //   dispatch(login());
-  // }, []);
-  // console.log("location ", localStorage.getItem("token"));
 
   useEffect(() => {
     if (token === null) {
@@ -36,205 +18,9 @@ const LandingPage = () => {
     }
   }, []);
 
-  // else if(localStorage.getItem("token") != null) { localStorage.removeItem("token")}
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     // if (localStorage.getItem("login") === "google component") {
-  //     //   const decoded = jwtDecode(localStorage.getItem("token"));
-  //     //   console.log("decoded", decoded);
-  //     //   setUserData(decoded);
-  //     //   if (decoded?.exp < new Date() / 1000) {
-  //     //     alert("token expire");
-  //     //     handleLogout();
-  //     //     return;
-  //     //   }
-  //     // } else {
-  //     try {
-  //       const response = await axios.get(
-  //         "https://shy-cloud-3319.fly.dev/api/v1/auth/me",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //           },
-  //         }
-  //       );
-  //       const userData = response.data;
-  //       console.log("User data: ", userData);
-  //       setUserData(userData); // kalau pake login google yang pertama
-  //     } catch (error) {
-  //       if (error.response && error.response.status === 401) {
-  //         // alert("Token expired");
-  //         handleLogout();
-  //         return;
-  //       } else {
-  //         alert("An error occurred while fetching user data");
-  //         console.error("Error: ", error);
-  //       }
-  //     }
-  //     // }
-  //   }
-  //   fetchData();
-  // }, []);
-
-  // const handleClick = () => {
-  //   setClick(!click);
-  // };
-
-  // const isActive = (pathname) => {
-  //   return location.pathname === pathname;
-  // };
-
-  // const activeStyle = {
-  //   borderBottom: "2px solid white",
-  // };
-
-  // const handleLogout = () => {
-  //   localStorage.removeItem("token");
-  //   navigate("/Login");
-  // };
-
-  // const toggleDropdown = () => {
-  //   setDropdownVisible(!dropdownVisible);
-  // };
-
-  //mobile web responsive
-  // const content = (
-  //   <div className="lg:hidden block absolute top-16 w-full left-0 right-0 bg-slate-900 transition">
-  //     <ul className="text-center text-xl p-20">
-  //       <Link spy={true} smooth={true} onClick={() => navigate("/Login")}>
-  //         <li className="my-4 py-4 font-poppins  border-b border-slate-800 hover:bg-slate-800 hover:rounded">
-  //           Home
-  //         </li>
-  //       </Link>
-  //       <Link spy={true} smooth={true} onClick={() => navigate("/Figures")}>
-  //         <li className="my-4 py-4  font-poppins   border-b border-slate-800 hover:bg-slate-800 hover:rounded">
-  //           Figures
-  //         </li>
-  //       </Link>
-  //       <Link spy={true} smooth={true} onClick={() => navigate("/Cards")}>
-  //         <li className="my-4 py-4  font-poppins   border-b border-slate-800 hover:bg-slate-800 hover:rounded">
-  //           Cards
-  //         </li>
-  //       </Link>
-  //       <Link spy={true} smooth={true} onClick={() => navigate("/Series")}>
-  //         <li className="my-4 py-4  font-poppins   border-b border-slate-800 hover:bg-slate-800 hover:rounded">
-  //           Series
-  //         </li>
-  //       </Link>
-  //       <Link spy={true} smooth={true} onClick={() => navigate("/Games")}>
-  //         <li className="my-4 py-4 font-poppins  border-b border-slate-800 hover:bg-slate-800 hover:rounded">
-  //           Games
-  //         </li>
-  //       </Link>
-  //     </ul>
-  //   </div>
-  // );
-
   return (
     <div>
       <Nav />
-      {/* navbar statis */}
-      {/* <nav>
-        <div className="nav flex bg-gradient-to-r from-gray-800 to-gray-700 fixed top-0 w-full justify-between h-10vh z-50 text-white px-20 py-8 flex-1 ">
-          <div className="my-2 lg:flex md:flex lg: flex-1 items-center justify-start font-normal hidden">
-            <div className="flex-10 font-poppins">
-              <ul className="flex gap-12 mr-16  text-[18px]">
-                <Link
-                  className="link"
-                  style={isActive("/LandingPage") ? activeStyle : null}
-                  spy={true}
-                  smooth={true}
-                  onClick={() => navigate("/LandingPage")}
-                >
-                  <li className="font-poppins  font-base text-lg transition border-b-2 border-transparent hover:border-white cursor-pointer">
-                    Home
-                  </li>
-                </Link>
-                <Link
-                  spy={true}
-                  smooth={true}
-                  onClick={() => navigate("/Figures")}
-                >
-                  <li className="font-poppins font-base text-lg transition border-b-2 border-transparent hover:border-white cursor-pointer">
-                    Figures
-                  </li>
-                </Link>
-                <Link
-                  spy={true}
-                  smooth={true}
-                  onClick={() => navigate("/Cards")}
-                >
-                  <li className="font-poppins font-base text-lg transition border-b-2 border-transparent hover:border-white cursor-pointer">
-                    Cards
-                  </li>
-                </Link>
-                <Link
-                  spy={true}
-                  smooth={true}
-                  onClick={() => navigate("/Series")}
-                >
-                  <li className="font-poppins font-base text-lg transition border-b-2 border-transparent hover:border-white cursor-pointer">
-                    Series
-                  </li>
-                </Link>
-                <Link
-                  spy={true}
-                  smooth={true}
-                  onClick={() => navigate("/Games")}
-                >
-                  <li className="font-poppins font-base text-lg transition border-b-2 border-transparent hover:border-white cursor-pointer">
-                    Games
-                  </li>
-                </Link>
-              </ul>
-            </div>
-          </div>
-          <div className="flex items-center mr-10">
-            <div className="flex">
-              <Link className="relative">
-                <a
-                  onClick={toggleDropdown}
-                  className="text-white cursor-pointer hover:text-primary"
-                >
-                  {userData && (
-                    <p className="flex text-lg font-base text-slate-100 italic cursor-pointer hover:text-primary hover:font-semibold">
-                      {userData?.data?.name}{" "}
-                      <img
-                        src="../src/assets/icon_profile.png"
-                        className="w-[26px] h-[26px] ml-3 "
-                        alt=""
-                      />
-                    </p>
-                  )}
-                </a>
-
-                {dropdownVisible && (
-                  <div className="absolute right-0 mt-5 w-48 cursor-pointer bg-white pt-2  pb-1 rounded-md shadow-lg z-10">
-                    <a
-                      onClick={() => navigate("/Profile")}
-                      className="block px-4 py-2 text-sm text-gray-700 rounded-md border-b-2 hover:bg-gray-100"
-                    >
-                      Profile
-                    </a>
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm  rounded-md  text-gray-700 hover:bg-gray-100"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </Link>
-            </div>
-          </div>
-
-          <div>{click && content}</div>
-          <button className="block sm:hidden transition" onClick={handleClick}>
-            {click ? <FaTimes /> : <CiMenuFries />}
-          </button>
-        </div>
-      </nav> */}
 
       <div className="justify-center flex mt-52">
         <img src="./src/assets/amiibo-lineup-img.avif" alt="" />

@@ -9,6 +9,7 @@ import cardReducers from "./reducers/cardReducers";
 import seriesReducers from "./reducers/seriesReducers";
 import gamesReducers from "./reducers/gamesReducers";
 import authReducers from "./reducers/authReducers";
+// import functionReducers from "./reducers/functionReducers";
 
 const rootReducers = combineReducers({
   figures: figureReducers,
@@ -16,13 +17,14 @@ const rootReducers = combineReducers({
   series: seriesReducers,
   games: gamesReducers,
   auth: authReducers,
+  // function: functionReducers,
 });
 
 const persistConfig = {
   key: "root",
   storage,
   // whitelist: ["todo"],
-  // blacklist: ["counter"],
+  // blacklist: ["function"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

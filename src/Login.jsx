@@ -1,44 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Toaster } from "react-hot-toast";
-import toast from "react-hot-toast";
 import GoogleLogin from "./GoogleLogin";
+import toast from "react-hot-toast";
 import { login } from "./redux/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setshowPassword,
-  setEmail,
-  setPassword,
-} from "./redux/reducers/authReducers";
+import { setshowPassword } from "./redux/reducers/authReducers";
 
 function Login() {
   const [email, setemail] = useState("gihonsinaga@gmail.com");
   const [password, setPassword] = useState("Gihon123");
-  // const [error, setError] = useState(null);
-  // const [showPassword, setShowPassword] = useState(false);
-  // const email = useSelector((state) => state.auth.email);
-  // const password = useSelector((state) => state.auth.password);
+
   const error = useSelector((state) => state.auth.errorr);
   const showPassword = useSelector((state) => state.auth.showPassword);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  console.log(" state error", error);
-
-  // console.log("state login", showPassword);
-
-  // const handleEmailChange = (e) => {
-  //   dispatch(setEmail(e.target.value));
-  // };
-
-  // const handlePasswordChange = (e) => {
-  //   dispatch(setPassword(e.target.value));
-  // };
 
   const togglePasswordVisibility = () => {
     dispatch(setshowPassword(!showPassword));
@@ -59,11 +39,6 @@ function Login() {
     dispatch(login(data, navigate));
   };
 
-  // useEffect(() => {
-  //   console.log("localStorage ", localStorage.getItem("persist:root"));
-  //   localStorage.removeItem("persist:root");
-  // }, []);
-
   const token = useSelector((state) => state.auth.token);
   useEffect(() => {
     if (token !== null) {
@@ -71,36 +46,6 @@ function Login() {
       navigate("/LandingPage");
     }
   }, []);
-
-  // const PasswordVisibility = () => {
-  //   setShowPassword(!showPassword);
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await axios.post(
-  //       "https://shy-cloud-3319.fly.dev/api/v1/auth/login",
-  //       {
-  //         email,
-  //         password,
-  //         expiresInMins: 30,
-  //       },
-  //       {
-  //         headers: { "Content-Type": "application/json" },
-  //       }
-  //     );
-  //     console.log("Logged in user data: ", response.data.data.token);
-  //     const token = response.data.data.token;
-  //     console.log("token", token);
-  //     localStorage.setItem("token", token);
-  //     navigate("/LandingPage");
-  //   } catch (error) {
-  //     console.error("Login error: ", error);
-  //     setError("Your email or password is wrong");
-  //   }
-  // };
 
   return (
     <div className="">

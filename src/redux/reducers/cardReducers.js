@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   cards: [],
   detail: null,
-  token: "ini adalah cards",
 };
 
 const cardSlicer = createSlice({

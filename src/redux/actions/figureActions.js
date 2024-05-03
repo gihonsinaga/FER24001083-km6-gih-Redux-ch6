@@ -1,9 +1,5 @@
 import axios from "axios";
-import {
-  setAmiibo,
-  setDetail,
-  setSearchTerm,
-} from "../reducers/figureReducers";
+import { setAmiibo, setDetail } from "../reducers/figureReducers";
 
 export const CharacterAmiibo = () => async (dispatch, getState) => {
   try {
@@ -20,7 +16,7 @@ export const CharacterAmiibo = () => async (dispatch, getState) => {
       series: item.amiiboSeries,
       tail: item.tail,
     }));
-    // setAmiibo(amiiboData);
+
     dispatch(setAmiibo(amiiboData));
   } catch (error) {
     console.error("Error fetching data", error);
@@ -44,8 +40,4 @@ export const DetailAmiibo = (props) => async (dispatch) => {
   } catch (error) {
     console.error("Error fetching data", error);
   }
-};
-
-export const handleSearch = (searchTerm) => (dispatch) => {
-  dispatch(setSearchTerm(searchTerm));
 };

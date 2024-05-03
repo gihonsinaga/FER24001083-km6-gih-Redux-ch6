@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   figures: [],
   detail: null,
-  searchTerm: "",
 };
 
 const figureSlicer = createSlice({
@@ -16,12 +15,9 @@ const figureSlicer = createSlice({
     setDetail: (state, action) => {
       state.detail = action.payload;
     },
-    setSearchTerm: (state, action) => {
-      state.searchTerm = action.payload;
-    },
   },
 });
 
-export const { setAmiibo, setDetail, setSearchTerm } = figureSlicer.actions;
+export const { setAmiibo, setDetail } = figureSlicer.actions;
 
 export default figureSlicer.reducer;

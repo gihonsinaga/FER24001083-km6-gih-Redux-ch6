@@ -1,15 +1,10 @@
 import axios from "axios";
-import {
-  setToken,
-  setIsLoggedIn,
-  setUser,
-  setError,
-} from "../reducers/authReducers";
+import { setToken, setIsLoggedIn, setUser } from "../reducers/authReducers";
 import toast from "react-hot-toast";
 
 export const login = (data, navigate) => async (dispatch) => {
   try {
-    // console.log("data 1", data);
+    // console.log("dataa 1", data);
     let config = {
       method: "post",
       url: "https://shy-cloud-3319.fly.dev/api/v1/auth/login",
@@ -90,11 +85,10 @@ export const register = (data, navigate) => async (dispatch) => {
     const response = await axios.request(config);
     const { token } = response.data.data;
 
-    dispatch(setToken(token));
+    // dispatch(setToken(token));
     dispatch(setIsLoggedIn(true));
     // dispatch(getMe(null, null, null));
 
-    navigate("/Login");
     if (response?.status === 201) {
       toast.success("Registration successful", {
         style: {
@@ -109,6 +103,8 @@ export const register = (data, navigate) => async (dispatch) => {
         },
         duration: 10000,
       });
+      alert("registration succesful");
+      navigate("/Login");
     }
   } catch (error) {
     const errorr = error.response.data.message;
