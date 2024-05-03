@@ -5,15 +5,26 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CharacterAmiibo } from "../redux/actions/gamesActions";
+import { handleSearch } from "../redux/actions/figureActions";
+
+import { setAmiibo } from "../redux/reducers/gamesReducers";
 
 const Games = () => {
   // const [amiibo, setAmiibo] = useState([]);
-  // const [sortedBy, setSortedBy] = useState(null);
+  const [sortedBy, setSortedBy] = useState(null);
   // const [searchTerm, setSearchTerm] = useState("");
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [itemsPerPage] = useState(12);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(12);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const searchTerm = useSelector((state) => state.figures.searchTerm);
+  // console.log("searchTerm ", searchTerm);
+
+  const handleSearchChange = (event) => {
+    dispatch(handleSearch(event.target.value));
+    setCurrentPage(1);
+  };
 
   const data = useSelector((state) => state.games.games);
   console.log("data series", data);
@@ -55,50 +66,59 @@ const Games = () => {
   //   CharacterAmiibo();
   // }, []);
 
-  // const sortByName = () => {
-  //   let sorted;
-  //   if (sortedBy === "name") {
-  //     sorted = [...amiibo].reverse();
-  //     setSortedBy(null);
-  //   } else {
-  //     sorted = [...amiibo].sort((a, b) => a.name.localeCompare(b.name));
-  //     setSortedBy("name");
-  //   }
-  //   setAmiibo(sorted);
-  //   setCurrentPage(1);
-  // };
+  const sortByName = () => {
+    let sorted;
+    if (sortedBy === "name") {
+      sorted = [...data].reverse();
+      setSortedBy(null);
+    } else {
+      sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
+      setSortedBy("name");
+    }
+    dispatch(setAmiibo(sorted));
+    setCurrentPage(1);
+  };
 
+  // search
   // const handleSearch = (event) => {
+  //   console.log("event", event);
   //   setSearchTerm(event.target.value);
   //   setCurrentPage(1);
   // };
 
-  // const indexOfLastItem = currentPage * itemsPerPage;
-  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentItems = amiibo
-  //   .filter((e) => e.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  //   .slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data
+    ? data
+        .filter((e) => e.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        .slice(indexOfFirstItem, indexOfLastItem)
+    : [];
 
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const totalPages = data
+    ? Math.ceil(
+        data.filter((e) =>
+          e.name.toLowerCase().includes(searchTerm.toLowerCase())
+        ).length / itemsPerPage
+      )
+    : 0;
 
-  // const totalPages = Math.ceil(amiibo.length / itemsPerPage);
+  let pageNumbers = [];
+  if (totalPages <= 5) {
+    pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+  } else {
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
 
-  // let pageNumbers = [];
-  // if (totalPages <= 5) {
-  //   pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-  // } else {
-  //   let startPage = Math.max(1, currentPage - 2);
-  //   let endPage = Math.min(totalPages, startPage + 4);
+    if (endPage - startPage < 4) {
+      startPage = Math.max(1, endPage - 4);
+    }
 
-  //   if (endPage - startPage < 4) {
-  //     startPage = Math.max(1, endPage - 4);
-  //   }
-
-  //   pageNumbers = Array.from(
-  //     { length: endPage - startPage + 1 },
-  //     (_, i) => startPage + i
-  //   );
-  // }
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
 
   return (
     <div className="">
@@ -112,7 +132,7 @@ const Games = () => {
         </h1>
       </div>
 
-      {/* <div className="flex ml-48 justify-between">
+      <div className="flex ml-48 justify-between">
         <div className="flex">
           <div className="font-bold text-xl mt-2 mr-4">Sort By :</div>
           <button
@@ -127,14 +147,14 @@ const Games = () => {
           <input
             type="text"
             placeholder="Search ..."
-            onChange={handleSearch}
+            onChange={handleSearchChange}
             className="text-black pl-5 mr-48 bg-slate-100 justify-start border-2 border-black rounded-full p-2 w-[400px] outline-none"
           />
         </div>
-      </div> */}
+      </div>
 
       <div className="flex flex-wrap mx-24 mt-20 mb-5 gap-y-20 gap-x-20 px-16 justify-center">
-        {data.map((e) => (
+        {currentItems.map((e) => (
           <div className="flex flex-col justify-center">
             <div className="group [perspective:1000px]">
               <div className="flex flex-col w-[350px] h-[70px] border-2 shadow-xl shadow-slate-500 items-center cursor-pointer transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] [backface-visibility:hidden]">
@@ -154,7 +174,7 @@ const Games = () => {
         ))}
       </div>
 
-      {/* {currentItems.length === 0 && (
+      {currentItems.length === 0 && (
         <div className="text-center  mt-10 text-lg text-gray-600">
           <img
             src="../src/assets/search2.png"
@@ -211,7 +231,7 @@ const Games = () => {
             Next
           </li>
         </ul>
-      </div> */}
+      </div>
 
       <div>
         <Footer />
