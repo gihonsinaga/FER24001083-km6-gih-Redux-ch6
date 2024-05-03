@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   series: [],
-  //   detailFigure: null,
-  token: "ini adalah series",
 };
 
 const seriesSlicer = createSlice({
@@ -14,9 +12,6 @@ const seriesSlicer = createSlice({
       //   console.log("action", action);
       state.series = action.payload;
     },
-    // setDetailFigure: (state, action) => {
-    //   state.detailFigure = action.payload;
-    // },
   },
 });
 

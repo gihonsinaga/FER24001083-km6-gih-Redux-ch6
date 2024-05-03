@@ -15,7 +15,7 @@ export const CharacterAmiibo = () => async (dispatch, getState) => {
       key: item.key,
       name: item.name,
     }));
-    // setAmiibo(amiiboData);
+
     dispatch(setAmiibo(amiiboData));
   } catch (error) {
     console.error("Error fetching data", error);

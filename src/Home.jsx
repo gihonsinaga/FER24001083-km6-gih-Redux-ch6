@@ -6,7 +6,6 @@ import { CiMenuFries } from "react-icons/ci";
 import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "./Components/Footer";
 import "./index.css";
-import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 function Home() {

@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Footer from "./Footer";
-import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DetailAmiibo } from "../redux/actions/figureActions";
 
 const FiguresDetail = () => {
-  // const [detail, setDetail] = useState(null);
-  // let location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.figures.detail);
-  // console.log("data figure detail", data);
 
   useEffect(() => {
     dispatch(DetailAmiibo());
   }, []);
 
   const token = useSelector((state) => state.auth.token);
-  // console.log("token", token);
 
   useEffect(() => {
     if (token === null) {
@@ -27,28 +22,6 @@ const FiguresDetail = () => {
       navigate("/Login");
     }
   }, []);
-
-  // const DetailAmiibo = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://www.amiiboapi.com/api/amiibo/?character&type=figure&tail=${location.state.id}`,
-  //       {
-  //         headers: { accept: "application/json" },
-  //       }
-  //     );
-
-  //     console.log("response data detail", response.data);
-
-  //     setDetail(response.data.amiibo[0]);
-  //   } catch (error) {
-  //     console.error("Error fetching data", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   console.log("location", location);
-  //   DetailAmiibo();
-  // }, []);
 
   return (
     <div className="">

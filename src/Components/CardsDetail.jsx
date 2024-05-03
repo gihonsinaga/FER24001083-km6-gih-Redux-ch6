@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Footer from "./Footer";
-import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactCardFlip from "react-card-flip";
 import { DetailCards } from "../redux/actions/cardActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const CardsDetail = () => {
-  // const [detail, setDetail] = useState(null);
   const [isFlipped, setIsFlipped] = useState(false);
-  // let location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.cards.detail);
-  // console.log("data", data);
 
   useEffect(() => {
     dispatch(DetailCards());
   }, []);
 
   const token = useSelector((state) => state.auth.token);
-  // console.log("token", token);
 
   useEffect(() => {
     if (token === null) {
@@ -30,31 +25,9 @@ const CardsDetail = () => {
     }
   }, []);
 
-  // const DetailCards = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://www.amiiboapi.com/api/amiibo/?character&type=card&showusage&tail=${location.state.id}`,
-  //       {
-  //         headers: { accept: "application/json" },
-  //       }
-  //     );
-
-  //     console.log("response data detail", response.data);
-
-  //     setDetail(response.data.amiibo[0]);
-  //   } catch (error) {
-  //     console.error("Error fetching data", error);
-  //   }
-  // };
-
   function flipCard() {
     setIsFlipped(!isFlipped);
   }
-
-  // useEffect(() => {
-  //   console.log("location", location);
-  //   DetailCards();
-  // }, [location.state.id]);
 
   return (
     <div className="">
