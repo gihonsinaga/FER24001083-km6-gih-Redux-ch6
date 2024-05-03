@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 export const login = (data, navigate) => async (dispatch) => {
   try {
-    console.log("data 1", data);
+    // console.log("data 1", data);
     let config = {
       method: "post",
       url: "https://shy-cloud-3319.fly.dev/api/v1/auth/login",
@@ -41,6 +41,40 @@ export const login = (data, navigate) => async (dispatch) => {
     // alert(error.message);
   }
 };
+
+export const registerLoginWithGoogleAction =
+  (accessToken, navigate) => async (dispatch) => {
+    try {
+      let data = JSON.stringify({
+        access_token: accessToken,
+      });
+
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `https://shy-cloud-3319.fly.dev/api/v1/auth/google`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+
+      const response = await axios.request(config);
+      const { token } = response.data.data;
+
+      dispatch(setToken(token));
+      dispatch(setIsLoggedIn(true));
+      dispatch(getMe(null, null, null));
+
+      navigate("/LandingPage");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response.data.message);
+        return;
+      }
+      toast.error(error.message);
+    }
+  };
 
 export const register = (data, navigate) => async (dispatch) => {
   try {
@@ -116,5 +150,17 @@ export const getMe = () => async (dispatch, getState) => {
   } catch (error) {
     // Handle error
     console.error("Error fetching user data:", error);
+  }
+};
+
+export const logout = (navigate) => (dispatch) => {
+  try {
+    dispatch(setToken(null));
+    dispatch(setIsLoggedIn(false));
+    dispatch(setUser(null));
+
+    // if (navigate) navigate("/");
+  } catch (error) {
+    alert(error?.message);
   }
 };
