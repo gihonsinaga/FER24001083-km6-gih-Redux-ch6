@@ -64,10 +64,10 @@ function Login() {
   //   localStorage.removeItem("persist:root");
   // }, []);
 
+  const token = useSelector((state) => state.auth.token);
   useEffect(() => {
-    console.log("localStorage ", localStorage.getItem("token"));
-    if (localStorage.getItem("token") !== null) {
-      toast.error("Please log out first before signing in again");
+    if (token !== null) {
+      alert("Please log out first before signing up again");
       navigate("/LandingPage");
     }
   }, []);
